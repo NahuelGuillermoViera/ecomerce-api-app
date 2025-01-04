@@ -1,1 +1,14 @@
-spring.application.name=ecomerce-api-app
+spring:
+  application:
+    name: ecomerce-api-app
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:mysql://localhost:3306/ecomerce_sys_db
+    username: root
+    password: 5N6a2h3u0e8l6G-1
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
