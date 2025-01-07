@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -31,6 +34,45 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO getProductById(Long id) {
         Optional<Product> product = productRepository.findById(id);
         return product.map(this::mapToProductDTO).orElseGet(() -> null);
+    }
+
+    @Override
+    public List<ProductDTO> getAllProducts() {
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        productRepository.findAll().forEach(product ->
+                    productDTOList.add(mapToProductDTO(product))
+                );
+        return productDTOList;
+    }
+
+    @Override
+    public List<ProductDTO> getProductsByName(String name) {
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        productRepository.findAllByName(name).forEach(product ->
+                    productDTOList.add(mapToProductDTO(product))
+                );
+        return productDTOList;
+    }
+
+    @Override
+    public List<ProductDTO> getProductsByPrice(Double minPrice, Double maxPrice) {
+        List<ProductDTO> productDTOList = new ArrayList<>();
+
+        productRepository.findAll().forEach(product ->
+                {
+                    if (maxPrice == 0) {
+                        if (product.getPrice() >= minPrice) {
+                            productDTOList.add(mapToProductDTO(product));
+                        }
+                    } else {
+                        if (product.getPrice() >= minPrice && product.getPrice() <= maxPrice) {
+                            productDTOList.add(mapToProductDTO(product));
+                        }
+                    }
+
+                });
+
+        return productDTOList;
     }
 
     private Product mapToProduct(ProductDTO productDTO) {
