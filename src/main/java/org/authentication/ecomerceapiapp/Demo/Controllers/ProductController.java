@@ -33,10 +33,6 @@ public class ProductController {
     public ResponseEntity<Object> getProductById(@PathVariable("id") Long id) {
         data = new HashMap<>();
         ProductDTO productDTO = productService.getProductById(id);
-
-        if (productDTO == null) {
-            return ResponseEntity.notFound().build();
-        }
         data.put("Producto entoncrado: ", productDTO);
 
         return  ResponseEntity.ok(data);

@@ -2,6 +2,7 @@ package org.authentication.ecomerceapiapp.Demo.Services;
 
 import org.authentication.ecomerceapiapp.Demo.DTO.ProductDTO;
 import org.authentication.ecomerceapiapp.Demo.Entities.Product;
+import org.authentication.ecomerceapiapp.Demo.Exceptions.ResourceNotFoundException;
 import org.authentication.ecomerceapiapp.Demo.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO getProductById(Long id) {
-        Optional<Product> product = productRepository.findById(id);
-        return product.map(this::mapToProductDTO).orElseGet(() -> null);
+        return productRepository.findById(id).map(this::mapToProductDTO).orElseThrow(() ->
+                new ResourceNotFoundException("Product", "id", id.toString())
+        );
     }
 
     @Override
@@ -48,9 +50,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> getProductsByName(String name) {
         List<ProductDTO> productDTOList = new ArrayList<>();
-        productRepository.findAllByName(name).forEach(product ->
-                    productDTOList.add(mapToProductDTO(product))
-                );
+        List<Product> productList = productRepository.findAllByName(name);
+        if (productList.isEmpty()) {
+            throw new ResourceNotFoundException("Product", "name", name);
+        }
+        productList.forEach(product ->
+                productDTOList.add(mapToProductDTO(product))
+        );
         return productDTOList;
     }
 
