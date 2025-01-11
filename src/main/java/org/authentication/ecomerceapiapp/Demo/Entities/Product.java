@@ -1,10 +1,13 @@
 package org.authentication.ecomerceapiapp.Demo.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Data
@@ -26,4 +29,8 @@ public class Product {
 
     @Column(nullable = false)
     private String imageUrl;
+
+    @ManyToMany
+    @JsonIgnoreProperties("products")
+    private Set<Category> categories;
 }
