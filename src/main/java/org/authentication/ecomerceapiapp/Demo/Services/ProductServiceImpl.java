@@ -81,6 +81,18 @@ public class ProductServiceImpl implements ProductService {
         return productDTOList;
     }
 
+    @Override
+    public ProductDTO updateProduct(ProductDTO productDTO) {
+        //TODO: I need to read respective productDTO map to product and return new DTO before update
+
+        Product product = mapToProduct(productDTO);
+        Product productSaved = productRepository.save(product);
+
+        return mapToProductDTO(productSaved);
+    }
+
+
+
     private Product mapToProduct(ProductDTO productDTO) {
         Product product = new Product();
         product.setName(productDTO.getName());
