@@ -63,4 +63,12 @@ public class ProductController {
         data.put("Products", productDTOList);
         return  ResponseEntity.ok(data);
     }
+
+
+    public ResponseEntity<Object> updateProduct(ProductDTO productDTO) {
+        //TODO: I need to read the find type and before update using Service
+        //CORRECTION: this is on the Frontend
+
+        return null;
+    }
 }
