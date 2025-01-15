@@ -65,10 +65,12 @@ public class ProductController {
     }
 
 
-    public ResponseEntity<Object> updateProduct(ProductDTO productDTO) {
-        //TODO: I need to read the find type and before update using Service
-        //CORRECTION: this is on the Frontend
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateProduct(@RequestBody ProductDTO productDTO) {
+        data = new HashMap<>();
 
-        return null;
+        data.put("Actualizado",productService.addProduct(productDTO));
+
+        return ResponseEntity.ok(data);
     }
 }

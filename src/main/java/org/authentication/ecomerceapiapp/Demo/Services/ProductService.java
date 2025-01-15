@@ -14,5 +14,4 @@ public interface ProductService {
     List<ProductDTO> getAllProducts();
     List<ProductDTO> getProductsByName(String name);
     List<ProductDTO> getProductsByPrice(Double minPrice, Double maxPrice);
-    ProductDTO updateProduct(ProductDTO productDTO);
 }
