@@ -24,13 +24,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO addProduct(ProductDTO productDTO) {
-        Product product = mapToProduct(productDTO);
-        if(!productRepository.existsById(product.getId())) {
-            Product productSaved = productRepository.save(product);
-            return mapToProductDTO(productSaved);
+        if( productDTO.getId() != null && productRepository.existsById(productDTO.getId())) {
+            Product updatedProduct = productRepository.save(mapToProduct(productDTO, true));
+            return mapToProductDTO(updatedProduct);
         }
-        Product updatedProduct = productRepository.save(mapToProduct(productDTO));
-        return mapToProductDTO(updatedProduct);
+        Product productSaved = productRepository.save(mapToProduct(productDTO, false));
+        return mapToProductDTO(productSaved);
     }
 
     @Override
@@ -46,6 +45,9 @@ public class ProductServiceImpl implements ProductService {
         productRepository.findAll().forEach(product ->
                     productDTOList.add(mapToProductDTO(product))
                 );
+        if (productDTOList.isEmpty()) {
+            throw new ResourceNotFoundException("Product", "all", "selection");
+        }
         return productDTOList;
     }
 
@@ -83,10 +85,20 @@ public class ProductServiceImpl implements ProductService {
         return productDTOList;
     }
 
+    @Override
+    public void deleteProduct(Long id) {
+        if(!productRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Product", "id", id.toString());
+        }
+        productRepository.deleteById(id);
+    }
 
-    private Product mapToProduct(ProductDTO productDTO) {
+
+    private Product mapToProduct(ProductDTO productDTO, boolean exist) {
         Product product = new Product();
-        product.setId(productDTO.getId());
+        if (exist) {
+            product.setId(productDTO.getId());
+        }
         product.setName(productDTO.getName());
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());

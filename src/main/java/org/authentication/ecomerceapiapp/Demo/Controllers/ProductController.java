@@ -73,4 +73,10 @@ public class ProductController {
 
         return ResponseEntity.ok(data);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteProduct(@RequestParam Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.ok("Objeto de id: " + id + " eliminado con exito");
+    }
 }
