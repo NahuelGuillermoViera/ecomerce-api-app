@@ -15,4 +15,5 @@ public interface ProductService {
     List<ProductDTO> getProductsByName(String name);
     List<ProductDTO> getProductsByPrice(Double minPrice, Double maxPrice);
     void deleteProduct(Long id);
+    void deleteProduct(ProductDTO productDTO);
 }

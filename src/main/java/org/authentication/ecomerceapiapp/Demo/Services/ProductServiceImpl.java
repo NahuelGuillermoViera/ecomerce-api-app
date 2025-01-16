@@ -93,6 +93,14 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
+    @Override
+    public void deleteProduct(ProductDTO productDTO) {
+        if(!productRepository.existsById(productDTO.getId())) {
+            throw new ResourceNotFoundException("Product", "id", productDTO.getId().toString());
+        }
+        productRepository.delete(mapToProduct(productDTO, true));
+    }
+
 
     private Product mapToProduct(ProductDTO productDTO, boolean exist) {
         Product product = new Product();
