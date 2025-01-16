@@ -73,4 +73,16 @@ public class ProductController {
 
         return ResponseEntity.ok(data);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteProduct(@RequestParam(defaultValue = "0", required = false) Long id, @RequestBody(required = false) ProductDTO productDTO) {
+        if (id == 0 && productDTO != null) {
+            productService.deleteProduct(productDTO);
+            return ResponseEntity.ok("Product deletad");
+        } else if (id != 0 && productDTO == null) {
+            productService.deleteProduct(id);
+            return ResponseEntity.ok("Objeto de id: " + id + " eliminado con exito");
+        }
+        return ResponseEntity.badRequest().body("Error al eliminar el producto");
+    }
 }
